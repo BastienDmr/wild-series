@@ -53,6 +53,35 @@ const read = async (req, res, next) => {
   }
 };
 
+const edit = async (req, res, next) => {
+  // Extract the category data from the request body and params
+  const category = { ...req.body, id: req.params.id };
+
+  try {
+    // Update the category in the database
+    await tables.category.update(category);
+
+    // Respond with HTTP 204 (No Content)
+    res.sendStatus(204);
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    next(err);
+  }
+};
+
+const destroy = async (req, res, next) => {
+  try {
+    // Delete the category from the database
+    await tables.category.delete(req.params.id);
+
+    // Respond with HTTP 204 (No Content)
+    res.sendStatus(204);
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    next(err);
+  }
+};
+
 // Export it to import it somewhere else
 
-module.exports = { browse, add, read };
+module.exports = { browse, add, read, edit, destroy };
