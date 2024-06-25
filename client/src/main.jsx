@@ -10,6 +10,7 @@ import myAxios from "./services/myAxios";
 
 import App from "./App";
 import Categories from "./pages/Categories";
+import CategoryDetails from "./pages/CategoryDetails";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,15 @@ const router = createBrowserRouter([
       const response = await myAxios.post("/api/category", { name });
 
       return redirect(`/categories/${response.data.insertId}`);
+    },
+  },
+  {
+    path: "/categories/:id",
+    element: <CategoryDetails />,
+    loader: async ({ params }) => {
+      const response = await myAxios.get(`/api/category/${params.id}`);
+
+      return response.data;
     },
   },
 ]);
