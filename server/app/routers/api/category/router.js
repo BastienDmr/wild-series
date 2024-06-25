@@ -7,9 +7,12 @@ const router = express.Router();
 /* ************************************************************************* */
 
 // Import item-related actions
-const { browse } = require("../../../controllers/categoryActions");
+const { browse, add } = require("../../../controllers/categoryActions");
 
 // Route to get a list of items
 router.get("/", browse);
+
+// Route to add a new item
+router.post("/", add);
 
 module.exports = router;

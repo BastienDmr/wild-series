@@ -10,13 +10,13 @@ class CategoryRepository extends AbstractRepository {
   // The C of CRUD - Create operation
 
   async create(category) {
-    // Execute the SQL INSERT query to add a new item to the "item" table
+    // Execute the SQL INSERT query to add a new category to the "category" table
     const [result] = await this.database.query(
-      `insert into ${this.table} (title, user_id) values (?, ?)`,
-      [category.title, category.user_id]
+      `insert into ${this.table} (name) values (?)`,
+      [category.name]
     );
 
-    // Return the ID of the newly inserted item
+    // Return the ID of the newly inserted category
     return result.insertId;
   }
 

@@ -29,7 +29,7 @@ const router = createBrowserRouter([
 
       const name = formData.get("name");
 
-      const response = await myAxios.post("/api/categories", { name });
+      const response = await myAxios.post("/api/category", { name });
 
       return redirect(`/categories/${response.data.insertId}`);
     },
