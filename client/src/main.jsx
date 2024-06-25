@@ -12,12 +12,14 @@ import App from "./App";
 import Categories from "./pages/Categories";
 import CategoryDetails from "./pages/CategoryDetails";
 import CategoryEdit from "./pages/CategoryEdit";
+import Programs from "./pages/Programs";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
   },
+  // Category
   {
     path: "/categories",
     element: <Categories />,
@@ -72,6 +74,17 @@ const router = createBrowserRouter([
         default:
           throw new Response("", { status: 405 });
       }
+    },
+  },
+
+  // Programs
+  {
+    path: "/programmes",
+    element: <Programs />,
+    loader: async () => {
+      const response = await myAxios.get("/api/programs");
+
+      return response.data;
     },
   },
 ]);
