@@ -1,7 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  redirect,
+} from "react-router-dom";
 import myAxios from "./services/myAxios";
 
 import App from "./App";
@@ -19,6 +23,15 @@ const router = createBrowserRouter([
       const response = await myAxios.get("/api/category");
 
       return response.data;
+    },
+    action: async ({ request }) => {
+      const formData = await request.formData();
+
+      const name = formData.get("name");
+
+      const response = await myAxios.post("/api/categories", { name });
+
+      return redirect(`/categories/${response.data.insertId}`);
     },
   },
 ]);
