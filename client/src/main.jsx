@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from "react";
 import ReactDOM from "react-dom/client";
 
@@ -94,7 +95,7 @@ const router = createBrowserRouter([
       const poster = formData.get("poster");
       const country = formData.get("country");
       const year = formData.get("year");
-      const categoryId = formData.get("category_id");
+      const category_id = formData.get("category_id");
 
       const response = await myAxios.post("/api/programs", {
         title,
@@ -102,7 +103,7 @@ const router = createBrowserRouter([
         poster,
         country,
         year,
-        categoryId,
+        category_id,
       });
 
       return redirect(`/programmes/${response.data.insertId}`);
