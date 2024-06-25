@@ -86,6 +86,27 @@ const router = createBrowserRouter([
 
       return response.data;
     },
+    action: async ({ request }) => {
+      const formData = await request.formData();
+
+      const title = formData.get("title");
+      const synopsis = formData.get("synopsis");
+      const poster = formData.get("poster");
+      const country = formData.get("country");
+      const year = formData.get("year");
+      const categoryId = formData.get("category_id");
+
+      const response = await myAxios.post("/api/programs", {
+        title,
+        synopsis,
+        poster,
+        country,
+        year,
+        categoryId,
+      });
+
+      return redirect(`/programmes/${response.data.insertId}`);
+    },
   },
 ]);
 
