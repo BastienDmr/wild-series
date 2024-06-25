@@ -12,8 +12,15 @@ class ProgramRepository extends AbstractRepository {
   async create(program) {
     // Execute the SQL INSERT query to add a new item to the "item" table
     const [result] = await this.database.query(
-      `insert into ${this.table} (title, user_id) values (?, ?)`,
-      [program.title, program.user_id]
+      `insert into ${this.table} (title, synopsis, poster, country, year,category_id) values (?, ?, ?, ?, ?, ?)`,
+      [
+        program.title,
+        program.synopsis,
+        program.poster,
+        program.country,
+        program.year,
+        program.category_id,
+      ]
     );
 
     // Return the ID of the newly inserted item
