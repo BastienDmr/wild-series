@@ -23,13 +23,21 @@ class CategoryRepository extends AbstractRepository {
   // The Rs of CRUD - Read operations
 
   async read(id) {
-    // Execute the SQL SELECT query to retrieve a specific item by its ID
+    // Execute the SQL SELECT query to retrieve a specific category by its ID
     const [rows] = await this.database.query(
-      `select * from ${this.table} where id = ?`,
+      `select category.*, JSON_ARRAYAGG(
+          JSON_OBJECT(
+            "id", program.id,
+            "title", program.title
+          )
+        ) as programs from ${this.table}
+        left join program on program.category_id = category.id
+        where category.id = ?
+        group by category.id`,
       [id]
     );
 
-    // Return the first row of the result, which represents the item
+    // Return the first row of the result, which represents the category
     return rows[0];
   }
 
