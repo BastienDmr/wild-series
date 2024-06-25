@@ -11,6 +11,7 @@ import myAxios from "./services/myAxios";
 import App from "./App";
 import Categories from "./pages/Categories";
 import CategoryDetails from "./pages/CategoryDetails";
+import CategoryEdit from "./pages/CategoryEdit";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,35 @@ const router = createBrowserRouter([
       const response = await myAxios.get(`/api/category/${params.id}`);
 
       return response.data;
+    },
+  },
+  {
+    path: "/categories/:id/edit",
+    element: <CategoryEdit />,
+    loader: async ({ params }) => {
+      const response = await myAxios.get(`/api/category/${params.id}`);
+
+      return response.data;
+    },
+    action: async ({ request, params }) => {
+      const formData = await request.formData();
+
+      switch (request.method.toLowerCase()) {
+        case "put": {
+          await myAxios.put(`/api/category/${params.id}`, {
+            name: formData.get("name"),
+          });
+
+          return redirect(`/categories/${params.id}`);
+        }
+        case "delete": {
+          await myAxios.delete(`/api/category/${params.id}`);
+
+          return redirect("/categories");
+        }
+        default:
+          throw new Response("", { status: 405 });
+      }
     },
   },
 ]);
