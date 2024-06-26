@@ -10,26 +10,34 @@ class CategoryRepository extends AbstractRepository {
   // The C of CRUD - Create operation
 
   async create(category) {
-    // Execute the SQL INSERT query to add a new item to the "item" table
+    // Execute the SQL INSERT query to add a new category to the "category" table
     const [result] = await this.database.query(
-      `insert into ${this.table} (title, user_id) values (?, ?)`,
-      [category.title, category.user_id]
+      `insert into ${this.table} (name) values (?)`,
+      [category.name]
     );
 
-    // Return the ID of the newly inserted item
+    // Return the ID of the newly inserted category
     return result.insertId;
   }
 
   // The Rs of CRUD - Read operations
 
   async read(id) {
-    // Execute the SQL SELECT query to retrieve a specific item by its ID
+    // Execute the SQL SELECT query to retrieve a specific category by its ID
     const [rows] = await this.database.query(
-      `select * from ${this.table} where id = ?`,
+      `select category.*, JSON_ARRAYAGG(
+          JSON_OBJECT(
+            "id", program.id,
+            "title", program.title
+          )
+        ) as programs from ${this.table}
+        left join program on program.category_id = category.id
+        where category.id = ?
+        group by category.id`,
       [id]
     );
 
-    // Return the first row of the result, which represents the item
+    // Return the first row of the result, which represents the category
     return rows[0];
   }
 
@@ -44,16 +52,30 @@ class CategoryRepository extends AbstractRepository {
   // The U of CRUD - Update operation
   // TODO: Implement the update operation to modify an existing item
 
-  // async update(item) {
-  //   ...
-  // }
+  async update(category) {
+    // Execute the SQL UPDATE query to update a specific category
+    const [result] = await this.database.query(
+      `update ${this.table} set name = ? where id = ?`,
+      [category.name, category.id]
+    );
+
+    // Return how many rows were affected
+    return result.affectedRows;
+  }
 
   // The D of CRUD - Delete operation
   // TODO: Implement the delete operation to remove an item by its ID
 
-  // async delete(id) {
-  //   ...
-  // }
+  async delete(id) {
+    // Execute the SQL DELETE query to delete a specific category
+    const [result] = await this.database.query(
+      `delete from ${this.table} where id = ?`,
+      [id]
+    );
+
+    // Return how many rows were affected
+    return result.affectedRows;
+  }
 }
 
 module.exports = CategoryRepository;
