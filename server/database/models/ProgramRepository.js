@@ -30,13 +30,13 @@ class ProgramRepository extends AbstractRepository {
   // The Rs of CRUD - Read operations
 
   async read(id) {
-    // Execute the SQL SELECT query to retrieve a specific item by its ID
+    // Execute the SQL SELECT query to retrieve a specific category by its ID
     const [rows] = await this.database.query(
       `select * from ${this.table} where id = ?`,
       [id]
     );
 
-    // Return the first row of the result, which represents the item
+    // Return the first row of the result, which represents the category
     return rows[0];
   }
 
