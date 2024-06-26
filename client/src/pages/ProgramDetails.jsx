@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, Link } from "react-router-dom";
 
 function ProgramDetails() {
   const program = useLoaderData();
@@ -9,6 +9,7 @@ function ProgramDetails() {
       <p>Voici le detail : {program.synopsis}</p>
       <p>Année de prod : {program.year}</p>
       <p>Pays : {program.country}</p>
+      <Link to={`/programmes/${program.id}/edit`}>Modifier</Link>
     </>
   );
 }

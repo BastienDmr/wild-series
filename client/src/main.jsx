@@ -15,6 +15,7 @@ import CategoryDetails from "./pages/CategoryDetails";
 import CategoryEdit from "./pages/CategoryEdit";
 import Programs from "./pages/Programs";
 import ProgramDetails from "./pages/ProgramDetails";
+import ProgramEdit from "./pages/ProgramEdit";
 
 const router = createBrowserRouter([
   {
@@ -117,6 +118,36 @@ const router = createBrowserRouter([
       const response = await myAxios.get(`/api/programs/${params.id}`);
 
       return response.data;
+    },
+  },
+  {
+    path: "/programmes/:id/edit",
+    element: <ProgramEdit />,
+    loader: async ({ params }) => {
+      const response = await myAxios.get(`/api/programs/${params.id}`);
+
+      return response.data;
+    },
+    action: async ({ request, params }) => {
+      const formData = await request.formData();
+
+      switch (request.method.toLowerCase()) {
+        case "put": {
+          await myAxios.put(`/api/programs/${params.id}`, {
+            title: formData.get("title"),
+            synopsis: formData.get("synopsis"),
+          });
+
+          return redirect(`/programmes/${params.id}`);
+        }
+        case "delete": {
+          await myAxios.delete(`/api/programs/${params.id}`);
+
+          return redirect("/programmes");
+        }
+        default:
+          throw new Response("", { status: 405 });
+      }
     },
   },
 ]);
