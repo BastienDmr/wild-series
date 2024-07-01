@@ -15,6 +15,8 @@ const {
   destroy,
 } = require("../../../controllers/programActions");
 
+const validateProgram = require("../../../services/programValidator");
+
 // Route to get a list of items
 router.get("/", browse);
 
@@ -22,10 +24,10 @@ router.get("/", browse);
 router.get("/:id", read);
 
 // Route to add a new item
-router.post("/", add);
+router.post("/", validateProgram, add);
 
 // Route to edit an existing category
-router.put("/:id", edit);
+router.put("/:id", validateProgram, edit);
 
 // Route to edit an existing category
 router.delete("/:id", destroy);
